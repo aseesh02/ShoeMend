@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShoeMend - Shoe & Heel Repair</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family: 'Montserrat', sans-serif;}
+    body {background-color:#f7f5f2; color:#333; overflow-x:hidden;}
+
+    header {
+      background-color:#222; color:#fff; padding:20px 50px;
+      display:flex; justify-content:space-between; align-items:center; position:fixed; width:100%; top:0; z-index:1000;
+    }
+    header h1 {font-weight:700; font-size:28px; letter-spacing:1px;}
+    nav a {color:#fff; text-decoration:none; margin-left:25px; font-weight:500; transition:color 0.3s;}
+    nav a:hover {color:#f39c12;}
+
+    .hero {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      height:100vh; background:url('https://images.unsplash.com/photo-1563720225454-35f5c41d7b9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-4.0.3&q=80&w=1080') no-repeat center center/cover;
+      text-align:center; color:#fff; position:relative; overflow:hidden;
+    }
+    .hero::after {
+      content:''; position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);
+    }
+    .hero-content {position:relative; z-index:1; opacity:0; transform:translateY(50px); animation:fadeInUp 1s forwards 0.5s;}
+    .hero h2 {font-size:48px; margin-bottom:20px;}
+    .hero p {font-size:20px; margin-bottom:30px;}
+    .hero button {background-color:#f39c12; color:#fff; border:none; padding:15px 30px; font-size:18px; font-weight:600; border-radius:25px; cursor:pointer; transition:background 0.3s, transform 0.3s;}
+    .hero button:hover {background-color:#d87c0a; transform:scale(1.05);}
+
+    .services {padding:100px 50px 80px 50px; display:flex; flex-wrap:wrap; justify-content:space-around; gap:30px;}
+    .service-card {
+      background-color:#fff; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); padding:30px; width:300px; text-align:center;
+      transition:transform 0.3s, box-shadow 0.3s; opacity:0; transform:translateY(50px);
+    }
+    .service-card.visible {opacity:1; transform:translateY(0); transition: all 0.8s ease-out;}
+    .service-card:hover {transform:translateY(-10px); box-shadow:0 15px 30px rgba(0,0,0,0.15);}
+    .service-card img {width:80px; margin-bottom:20px;}
+    .service-card h3 {margin-bottom:15px; font-size:22px; color:#222;}
+    .service-card p {color:#555; font-size:16px;}
+
+    footer {background-color:#222; color:#fff; padding:30px 50px; text-align:center; font-size:14px;}
+    footer a {color:#f39c12; text-decoration:none; margin-left:5px;}
+
+    @media(max-width:768px){.hero h2{font-size:36px;}.hero p{font-size:18px;}.services{flex-direction:column; align-items:center;}}
+
+    /* Animations */
+    @keyframes fadeInUp {0%{opacity:0; transform:translateY(50px);} 100%{opacity:1; transform:translateY(0);}}
+
+    /* Popup Modal */
+    .modal {display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.6);}
+    .modal-content {background-color:#fff; margin:10% auto; padding:30px; border-radius:20px; width:90%; max-width:500px; position:relative;}
+    .close {position:absolute; right:20px; top:20px; font-size:28px; font-weight:bold; cursor:pointer;}
+    .modal-content h2{margin-bottom:20px; text-align:center;}
+    .modal-content form input, .modal-content form textarea, .modal-content form button {
+      width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ccc; font-size:16px;
+    }
+    .modal-content form button {
+      background-color:#f39c12; color:#fff; border:none; font-weight:600; cursor:pointer; transition:background 0.3s;
+    }
+    .modal-content form button:hover {background-color:#d87c0a;}
+    #map {width:100%; height:200px; border-radius:12px;}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ShoeMend</h1>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#" id="openModal">Book Repair</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Restore Your Shoes & Heels</h2>
+      <p>Professional shoe repair services that make your footwear look brand new.</p>
+      <button id="heroBookBtn">Book a Repair</button>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/000000/shoe.png" alt="Shoe Repair">
+      <h3>Shoe Repair</h3>
+      <p>Fix soles, seams, and worn-out shoes to restore them to perfect condition.</p>
+    </div>
+    <div class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/000000/high-heel.png" alt="Heels Repair">
+      <h3>Heels Repair</h3>
+      <p>Repair broken or worn-out heels and ensure a comfortable fit for your shoes.</p>
+    </div>
+    <div class="service-card">
+      <img src="https://img.icons8.com/ios-filled/100/000000/shoe-heel.png" alt="Custom Fix">
+      <h3>Custom Fix</h3>
+      <p>Tailored solutions for unique shoe problems and high-end footwear.</p>
+    </div>
+  </section>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Book Your Repair</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="tel" placeholder="Phone Number" required>
+        <textarea placeholder="Describe Your Shoe Problem" rows="4" required></textarea>
+        <div id="map"></div>
+        <button type="submit">Submit Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <footer id="contact">
+    <p>&copy; 2025 ShoeMend. Designed with ❤️. Contact us at <a href="mailto:info@shoemend.com">info@shoemend.com</a></p>
+  </footer>
+
+  <script>
+    // Scroll animation for service cards
+    const cards = document.querySelectorAll('.service-card');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('visible'); } });
+    }, {threshold: 0.2});
+    cards.forEach(card => observer.observe(card));
+
+    // Modal popup functionality
+    const modal = document.getElementById('bookingModal');
+    const openModalBtns = [document.getElementById('openModal'), document.getElementById('heroBookBtn')];
+    const closeModal = document.querySelector('.close');
+
+    openModalBtns.forEach(btn => btn.addEventListener('click', () => modal.style.display = 'block'));
+    closeModal.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => { if(e.target == modal) modal.style.display = 'none'; });
+
+    // Google Maps Integration
+    function initMap() {
+      const location = {lat: 28.6139, lng: 77.2090}; // Example: Delhi
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: location,
+      });
+      const marker = new google.maps.Marker({position: location, map: map});
+    }
+  </script>
+
+  <!-- Google Maps API (replace YOUR_API_KEY with your Google Maps API key) -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>
